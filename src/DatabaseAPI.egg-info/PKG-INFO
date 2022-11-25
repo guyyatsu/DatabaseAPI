@@ -11,3 +11,44 @@ Classifier: Operating System :: Linux
 Requires-Python: >=3.7
 Description-Content-Type: text/markdown
 License-File: LICENSE
+
+# Lab-93 DatabaseAPI
+
+# Documentation
+## [```DatabaseAPI.__init__```](https://github.com/guyyatsu/DatabaseAPI/blob/e7b15b094551057e00be465b094fa9a460f76563/src/DatabaseAPI/DatabaseAPI.py#L8-L63)  
+Set up the Sqlite3 db connection and cursor; also creates the initial table used by the db.  Some arguments are required:
+  - ```database```: __string__: Specifies the filepath to the .db file. Defaults to ./sqlite3-database.db
+  - ```tables```: __list__: Namespaces within the database. Defaults to \[test].
+  - ```columns```: __dictionary__: Populates the table with columns as defined by a nested dictionary containing keys for
+  the columns **table**, **name**, and **type**. For example:  
+    ```
+    columns = {
+      "ColumnOne": {
+        "table": "test",
+        "name": "ColumnOne",
+        "type": "TEXT"
+      }
+    }
+    ```
+
+## [```DatabaseAPI.TableHeader_PacketParser```](https://github.com/guyyatsu/DatabaseAPI/blob/e7b15b094551057e00be465b094fa9a460f76563/src/DatabaseAPI/DatabaseAPI.py#L66-L75)  
+Used for breaking apart the columns dictionary and returning it's values as a tuple.  
+  - ```HeaderPacket```: __dictionary__: __*One*__ of the nested dictionaries like the one from initialization; should contain values for ```table```, ```name```, and ```type```.
+
+## [```DatabaseAPI.Check_Column_Existence```](https://github.com/guyyatsu/DatabaseAPI/blob/e7b15b094551057e00be465b094fa9a460f76563/src/DatabaseAPI/DatabaseAPI.py#L78-L94)  
+Index and iterate through a table searching for a specific column using PRAGMA.  If the table is found, then return
+True.  
+  - ```table```: __string__: The table to search through for the header.
+  - ```header```: __string__: The column being searched for.
+
+## [```DatabaseAPI.Add_Column_Header```](https://github.com/guyyatsu/DatabaseAPI/blob/e7b15b094551057e00be465b094fa9a460f76563/src/DatabaseAPI/DatabaseAPI.py#L97-L116)  
+Accepts a _new_ column packet and adds them to their respective tables.
+  - ```columns```: __dictionary__: Similar to the aforementioned nested column packets; can represent multiple columns unlike TableHeader_PacketParser.
+
+## [```DatabaseAPI.Credential_Lookup```](https://github.com/guyyatsu/DatabaseAPI/blob/e7b15b094551057e00be465b094fa9a460f76563/src/DatabaseAPI/DatabaseAPI.py#L119-L132)  
+A wrapper for a simple SELECT statement.  SELECT credential FROM table WHERE comparator = value.
+
+  - ```credential```: __string__: The row being addressed by the selection.
+  - ```table```: __string__: The table being indexed.
+  - ```comparator```: __string__: The value to be compared against.
+  - ```value```: __string__: The targeted value of the comparator.

@@ -7,8 +7,10 @@ class DatabaseAPI:
 
   def __init__( self,
                 database="./sqlite3-database.db",
-                *tables: list,
+                *tables=[test],
                 **columns: dict                   ):
+
+    def FormatToSchema(token): return str( token.lower().replace(" ", "_") )
 
     try:
 
@@ -17,11 +19,12 @@ class DatabaseAPI:
       self.connection = sqlite3.connect(self.db)
       self.cursor = self.connection.cursor()    
 
+      # Formatting function needs to be brought into scope.
+      self.FormatToSchema = FormatToSchema
 
       for table in tables:# Check for table existence.
 
-        table = str( table.lower()\
-                          .replace(" ", "-") )
+        table = self.FormatToSchema(table)
 
         self.cursor.execute( f"SELECT name FROM sqlite_master "
                              f"WHERE type='table' AND name=?;",
@@ -65,25 +68,18 @@ class DatabaseAPI:
 
   def TableHeader_PacketParser( self, HeaderPacket: dict ):
     return [
-      str( HeaderPacket["table"].lower()\
-                                .replace(" ","-") ),
-
-      str( HeaderPacket["name"].lower()\
-                               .replace(" ","-") ),
-
+      self.FormatToSchema(HeaderPacket["table"])
+      self.FormatToSchema(HeaderPacket["name"])
       str( HeaderPacket["type"].upper() )
     ]
 
 
-  def Check_Column_Existence( self, table, header ):
-    """ Check if a table contains a specific header. """
+  def Check_Column_Existence( self, table: str, header: str ):
+    """ Check a table for a specific column. Return True if found. """
 
     # Format the arguments according to the db schema.
-    table = table.lower()\
-                 .replace(" ","-")
-
-    header = header.lower()\
-                   .replace(" ","-")
+    table = self.FormatToSchema(table)
+    header = self.FormatToSchema(header)
 
     # List every column header in the credentials table.
     columns = self.cursor.execute( "PRAGMA table_info(?);",
@@ -120,13 +116,12 @@ class DatabaseAPI:
                          credential: str,
                          table: str,
                          comparator: str,
-                         input: str,
-                         value=""         )
-    """ Select a value from a column. """
+                         value: str,      )
+    """ Select CREDENTIAL from TABLE where COMPARATOR = VALUE """
 
     self.cursor.execute(
       "SELECT ? FROM ? WHERE ?=?;",
-      (credential, table, comparator, input)
+      (credential, table, comparator, value)
     )
 
     return self.cursor.fetchall[0][0]
