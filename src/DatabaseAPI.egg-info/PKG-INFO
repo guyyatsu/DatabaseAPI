@@ -1,0 +1,13 @@
+Metadata-Version: 2.1
+Name: DatabaseAPI
+Version: 0.0.1
+Summary: An interface that makes it easier to build and maintain a database.
+Author-email: Hunter Dale <hunter@guyyatsu.me>
+Project-URL: Homepage, https://github.com/guyyatsu/DatabaseAPI
+Project-URL: Bug Tracker, https://github.com/guyyatsu/DatabaseAPI/issues
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: Linux
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+License-File: LICENSE

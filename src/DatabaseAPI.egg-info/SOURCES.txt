@@ -1,0 +1,8 @@
+LICENSE
+pyproject.toml
+src/DatabaseAPI/DatabaseAPI.py
+src/DatabaseAPI/__init__.py
+src/DatabaseAPI.egg-info/PKG-INFO
+src/DatabaseAPI.egg-info/SOURCES.txt
+src/DatabaseAPI.egg-info/dependency_links.txt
+src/DatabaseAPI.egg-info/top_level.txt
