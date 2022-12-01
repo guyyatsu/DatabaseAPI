@@ -112,11 +112,26 @@ class DatabaseAPI:
     return self.cursor.commit()
 
 
-  def Credential_Lookup( self,
-                         credential: str,
-                         table: str,
-                         comparator: str,
-                         value: str,      )
+  def Add_Row( table, column, value ):
+    """ Add a entry to the table. """
+    self.cursor.execute( f"INSERT INTO ? (?) "
+                         f"VALUES( ? );",
+                         (table, column, value) )
+
+    return self.connection.commit()
+
+
+  def Add_Value( table, column, value, username )
+    """ Add a new value to a row. """
+    self.cursor.execute( f"INSERT INTO ? (?) "
+                         f"VALUES( ? ) WHERE username=?;",
+                         (table, column, value, username) )
+
+  def Value_Lookup( self,
+                    credential: str,
+                    table: str,
+                    comparator: str,
+                    value: str,      )
     """ Select CREDENTIAL from TABLE where COMPARATOR = VALUE """
 
     self.cursor.execute(
