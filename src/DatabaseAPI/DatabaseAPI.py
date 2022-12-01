@@ -1,16 +1,15 @@
 #!/bin/python3
-""" 
-"""
+""" A handy interface for setting up a database. """
 
 import sqlite3
 class DatabaseAPI:
 
   def __init__( self,
+                columns,
                 database="./sqlite3-database.db",
-                *tables=[test],
-                **columns: dict                   ):
+               tables=["test"],                   ):
 
-    def FormatToSchema(token): return str( token.lower().replace(" ", "_") )
+    def FormatToSchema(token): return str(token.lower().replace(" ", "_"))
 
     try:
 
@@ -68,8 +67,8 @@ class DatabaseAPI:
 
   def TableHeader_PacketParser( self, HeaderPacket: dict ):
     return [
-      self.FormatToSchema(HeaderPacket["table"])
-      self.FormatToSchema(HeaderPacket["name"])
+      self.FormatToSchema(HeaderPacket["table"]),
+      self.FormatToSchema(HeaderPacket["name"]),
       str( HeaderPacket["type"].upper() )
     ]
 
@@ -87,7 +86,9 @@ class DatabaseAPI:
                          .fetchall()[0]
 
     # Check whether the given header matches those listed.
-    for column in columns: if (column == header): return True
+    for column in columns:
+      if column == header:
+        return True
 
     
   def Add_Column_Header( self, columns: dict ):
@@ -121,17 +122,18 @@ class DatabaseAPI:
     return self.connection.commit()
 
 
-  def Add_Value( table, column, value, username )
+  def Add_Value( table, column, value, username ):
     """ Add a new value to a row. """
     self.cursor.execute( f"INSERT INTO ? (?) "
                          f"VALUES( ? ) WHERE username=?;",
                          (table, column, value, username) )
 
+
   def Value_Lookup( self,
                     credential: str,
                     table: str,
                     comparator: str,
-                    value: str,      )
+                    value: str,      ):
     """ Select CREDENTIAL from TABLE where COMPARATOR = VALUE """
 
     self.cursor.execute(
